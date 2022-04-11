@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const Vacante = mongoose.model('vacante');
 const Usuarios = mongoose.model('Usuarios');
 const crypto = require('crypto');
-const { reset } = require('nodemon');
 const enviarEmail = require('../handlers/email');
 
 exports.autenticarUsuario = passport.authenticate('local', {
