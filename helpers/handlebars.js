@@ -21,7 +21,6 @@ module.exports = {
 
     mostrarAlertas: (errores = {}, alertas) => {
         const categoria = Object.keys(errores);
-        // console.log(errores[categoria]);
 
         let html = ``;
         if(categoria.length){

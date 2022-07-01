@@ -63,7 +63,6 @@ const skillsSeleccionados = () => {
     const skillsArray = [...skills]
     document.querySelector('#skills').value = skillsArray;
 
-    // console.log(seleccionadas);
 }
 
 const limpiarAlertas = () => {
