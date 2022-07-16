@@ -25,8 +25,12 @@
         <h2>Descripcion del Puesto</h2>
         <div class="vacante-descripcion">
             {{{vacante.descripcion}}}
+            {{!-- <p>{{{vacante.autor._id}}}</p>
+            <p>{{{userAuthenticated}}}</p> --}}
         </div>
-        <a href="/vacantes/editar/{{vacante.url}}" class="btn btn-azul editar-btn">Editar Vacante</a>
+        {{#if userAuthenticated}}
+            <a href="/vacantes/editar/{{vacante.url}}" class="btn btn-azul editar-btn">Editar Vacante</a>
+        {{/if}}
     </main>
 
     <aside class="sidebar">

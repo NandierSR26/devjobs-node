@@ -1,6 +1,5 @@
 module.exports = {
     seleccionarSkills: (seleccionadas = [], opciones) => {
-        // console.log(seleccionadas);
         const skills = ['HTML5', 'CSS3', 'CSSGrid', 'Flexbox', 'JavaScript', 'jQuery', 'Node', 'Angular', 'VueJS', 'ReactJS', 'React Hooks', 'Redux', 'Apollo', 'GraphQL', 'TypeScript', 'PHP', 'Laravel', 'Symfony', 'Python', 'Django', 'ORM', 'Sequelize', 'Mongoose', 'SQL', 'MVC', 'SASS', 'WordPress', 'Java', 'Spring', 'SpringBoot', 'Hibernate', 'Struts', 'Socket.io', 'C#.net', 'Entity Framework', 'Blazor', 'Web Assembly', 'Sql Server', 'Dart', 'Flutter'];
 
         let html = '';

@@ -32,6 +32,11 @@ exports.agregarVacante = async (req, res) => {
 // muestra una vacante
 exports.mostrarVacante = async (req, res, next) => {
     const vacante = await Vacante.findOne({ url: req.params.url }).populate('autor').lean();
+    let userAuthenticated;
+
+    if(vacante.autor._id.toString() === req.user._id.toString()) {
+        userAuthenticated = true;
+    }
 
     // si no hay resultados
     if (!vacante) return next();
@@ -39,6 +44,7 @@ exports.mostrarVacante = async (req, res, next) => {
     res.render('vacante', {
         nombrePagina: vacante.titulo,
         vacante,
+        userAuthenticated,
         barra: true
     })
 }
@@ -223,7 +229,7 @@ exports.buscarVacantes = async(req, res) => {
     }).lean();
 
     res.render('home', {
-        nombrePagina: 'Resultaos para la busqueda: ' + req.body.q,
+        nombrePagina: 'Resultados para la busqueda: ' + req.body.q,
         barra: true,
         vacantes
     })
