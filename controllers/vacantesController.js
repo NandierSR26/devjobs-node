@@ -34,7 +34,7 @@ exports.mostrarVacante = async (req, res, next) => {
     const vacante = await Vacante.findOne({ url: req.params.url }).populate('autor').lean();
     let userAuthenticated;
 
-    if(vacante.autor._id.toString() === req.user._id.toString()) {
+    if(vacante.autor._id.toString() === req.user?._id.toString()) {
         userAuthenticated = true;
     }
 
@@ -191,6 +191,8 @@ exports.contactar = async(req, res, next) => {
         email: req.body.email,
         cv: req.file.filename
     }
+
+    console.log(req.file.filename);
 
     // almacenar la vacante
     vacante.candidatos.push(nuevoCandidato);
