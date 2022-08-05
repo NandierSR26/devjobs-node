@@ -8,7 +8,7 @@ exports.subirImagen = (req, res, next) => {
         if (error) {
             if (error instanceof multer.MulterError) {
                 if (error.code = 'LIMIT_FILE_SIZE') {
-                    req.flash('error', 'El archivo es muy grande, maximo 100kb')
+                    req.flash('error', 'El archivo es muy grande, maximo 5mb')
                 } else {
                     req.flash('error', error.message)
                 }
@@ -25,10 +25,10 @@ exports.subirImagen = (req, res, next) => {
 
 // opciones de multer
 const configuracionMulter = {
-    limits: { fileSize: 100000 },
+    limits: { fileSize: 10000000 },
     storage: fileStorage = multer.diskStorage({
         destination: (req, file, cb) => {
-            cb(null, __dirname + '../../public/uploads/perfiles');
+            cb(null, __dirname + '../../uploads/perfiles');
         },
         filename: (req, file, cb) => {
             const extension = file.mimetype.split('/')[1];
