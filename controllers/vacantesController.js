@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Vacante = mongoose.model('vacante');
-const multer = require('multer');
-const shortid = require('shortid');
+const cloudinary = require('cloudinary').v2;
+cloudinary.config( process.env.CLOUDINARY_URL );
 
 exports.formularioNuevaVacante = (req, res) => {
     res.render('nueva-vacante', {
@@ -34,7 +34,7 @@ exports.mostrarVacante = async (req, res, next) => {
     const vacante = await Vacante.findOne({ url: req.params.url }).populate('autor').lean();
     let userAuthenticated;
 
-    if(vacante.autor._id.toString() === req.user?._id.toString()) {
+    if (vacante.autor._id.toString() === req.user?._id.toString()) {
         userAuthenticated = true;
     }
 
@@ -109,7 +109,7 @@ exports.validarVacante = (req, res, next) => {
     next();
 }
 
-exports.eliminarVacante = async(req, res, next) => {
+exports.eliminarVacante = async (req, res, next) => {
     const { id } = req.params;
 
     const vacante = await Vacante.findById(id);
@@ -135,64 +135,66 @@ const verificarAutor = (vacante = {}, usuario = {}) => {
 }
 
 // subir archivos en PDF
-exports.subirCV = (req, res, next) => {
-    upload(req, res, function (error) {
-        if (error) {
-            if (error instanceof multer.MulterError) {
-                if (error.code = 'LIMIT_FILE_SIZE') {
-                    req.flash('error', 'El archivo es muy grande, maximo 200kb')
-                } else {
-                    req.flash('error', error.message)
-                }
-            } else {
-                req.flash('error', error.message)
-            }
-            res.redirect('back');
-            return;
-        } else {
-            next();
-        }
-    });
-}
+// exports.subirCV = (req, res, next) => {
+//     upload(req, res, function (error) {
+//         if (error) {
+//             if (error instanceof multer.MulterError) {
+//                 if (error.code = 'LIMIT_FILE_SIZE') {
+//                     req.flash('error', 'El archivo es muy grande, maximo 200kb')
+//                 } else {
+//                     req.flash('error', error.message)
+//                 }
+//             } else {
+//                 req.flash('error', error.message)
+//             }
+//             res.redirect('back');
+//             return;
+//         } else {
+//             next();
+//         }
+//     });
+// }
 
-const configuracionMulter = {
-    limits: { fileSize: 2000000 },
-    storage: fileStorage = multer.diskStorage({
-        destination: (req, file, cb) => {
-            cb(null, __dirname + '../../uploads/cv');
-        },
-        filename: (req, file, cb) => {
-            const extension = file.mimetype.split('/')[1];
-            cb(null, `${shortid.generate()}.${extension}`);
-        }
-    }),
-    fileFilter(req, file, cb) {
-        if (file.mimetype === 'application/pdf') {
-            // el callback se ejecuta como true o false: true cuando la imagen se acepta
-            cb(null, true);
-        } else {
-            cb(new Error('Formato no valido'), false)
-        }
-    }
-}
+// const configuracionMulter = {
+//     limits: { fileSize: 2000000 },
+//     storage: fileStorage = multer.diskStorage({
+//         destination: (req, file, cb) => {
+//             cb(null, __dirname + '../../uploads/cv');
+//         },
+//         filename: (req, file, cb) => {
+//             const extension = file.mimetype.split('/')[1];
+//             cb(null, `${shortid.generate()}.${extension}`);
+//         }
+//     }),
+//     fileFilter(req, file, cb) {
+//         if (file.mimetype === 'application/pdf') {
+//             // el callback se ejecuta como true o false: true cuando la imagen se acepta
+//             cb(null, true);
+//         } else {
+//             cb(new Error('Formato no valido'), false)
+//         }
+//     }
+// }
 
-const upload = multer(configuracionMulter).single('cv');
+// const upload = multer(configuracionMulter).single('cv');
 
 // almacenar los candidatos en la base de datos
-exports.contactar = async(req, res, next) => {
+exports.contactar = async (req, res, next) => {
     const vacante = await Vacante.findOne({ url: req.params.url });
 
     // sino existe la vacante
-    if(!vacante) return next();
+    if (!vacante) return next();
+
+    const { tempFilePath } = req.files.cv;
+    const { secure_url } = await cloudinary.uploader.upload(tempFilePath);
 
     // todo bien, construir el nuevo onjeto
     const nuevoCandidato = {
         nombre: req.body.nombre,
         email: req.body.email,
-        cv: req.file.filename
+        cv: secure_url,
     }
 
-    console.log(req.file.filename);
 
     // almacenar la vacante
     vacante.candidatos.push(nuevoCandidato);
@@ -203,14 +205,15 @@ exports.contactar = async(req, res, next) => {
     res.redirect('/');
 }
 
-exports.mostrarCandidatos = async(req, res, next) => {
+exports.mostrarCandidatos = async (req, res, next) => {
     const vacante = await Vacante.findById(req.params.id).lean();
 
-    if(vacante.autor != req.user._id.toString()){
+    if (vacante.autor != req.user._id.toString()) {
         return next();
     }
 
-    if(!vacante) return next();
+    if (!vacante) return next();
+
 
     res.render('candidatos', {
         nombrePagina: `Candidatos vacante - ${vacante.titulo}`,
@@ -223,7 +226,7 @@ exports.mostrarCandidatos = async(req, res, next) => {
 }
 
 // buscador de vacantes
-exports.buscarVacantes = async(req, res) => {
+exports.buscarVacantes = async (req, res) => {
     const vacantes = await Vacante.find({
         $text: {
             $search: req.body.q

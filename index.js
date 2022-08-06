@@ -12,6 +12,8 @@ const expressValidator = require('express-validator');
 const flash = require('connect-flash');
 const createError = require('http-errors');
 const passport = require('./config/passport');
+const fileUpload = require('express-fileupload');
+
 
 require('dotenv').config({path: 'variables.env'})
 
@@ -59,6 +61,12 @@ app.use((req, res, next) => {
     res.locals.mensajes = req.flash();
     next();
 });
+
+app.use(fileUpload({
+    useTempFiles : true,
+    tempFileDir : '/tmp/',
+    createParentPath : true
+}))
 
 app.use('/', router());
 

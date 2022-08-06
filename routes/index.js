@@ -79,14 +79,11 @@ module.exports = () => {
 
     router.post('/editar-perfil', 
         authController.verificarUsuario,
-        // usuariosController.validarPerfil,
-        usuariosController.subirImagen,
         usuariosController.editarPerfil
     );
 
     // recivir mensajes de candidatos
     router.post('/vacantes/:url', 
-        vacantesController.subirCV,
         vacantesController.contactar
     );
 
