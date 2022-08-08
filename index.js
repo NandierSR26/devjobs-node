@@ -62,11 +62,11 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(fileUpload({
-    useTempFiles : true,
-    tempFileDir : '/tmp/',
-    createParentPath : true
-}))
+// app.use(fileUpload({
+//     useTempFiles : true,
+//     tempFileDir : '/tmp/',
+//     createParentPath : true
+// }))
 
 app.use('/', router());
 
