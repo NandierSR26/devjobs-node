@@ -84,7 +84,6 @@ exports.editarPerfil = async (req, res) => {
 
     usuario.nombre = req.body.nombre;
     usuario.email = req.body.email;
-    console.log(req.files);
 
     if (req.body.password) {
         usuario.password = req.body.password;
