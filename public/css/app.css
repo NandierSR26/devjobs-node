@@ -109,6 +109,8 @@ h3 {
     padding-top: 1rem;
     display: flex;
     justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
     flex: 1;
 }
 .buscador form {

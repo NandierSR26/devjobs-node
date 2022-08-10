@@ -19,6 +19,11 @@
         </h1>
         {{#if barra}}
             <div class="buscador">
+            {{#if userAuthenticated }}
+
+            {{else}}
+                <a href="/iniciar-sesion" class="btn btn-azul">Iniciar Sesion</a>
+            {{/if}}
                 <form action="/buscador" method="post">
                     <input type="text" name="q" class="buscar">
                     <input type="submit" value="buscar">
@@ -26,10 +31,11 @@
             </div>
         {{/if}}
 
+        
+
         {{#if cerrarSesion}}
             <div class="cerrar-sesion">
                 <p>Hola! {{nombre}}</p>
-
                 {{#if imagen}}
                     <img src="{{imagen}}" class="admin-perfil">
                 {{/if}}

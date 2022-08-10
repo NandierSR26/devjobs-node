@@ -40,6 +40,8 @@ exports.mostrarVacante = async (req, res, next) => {
 
     if (vacante.autor._id.toString() === req.user?._id.toString()) {
         userAuthenticated = true;
+    } else {
+        userAuthenticated = false;
     }
 
     // si no hay resultados

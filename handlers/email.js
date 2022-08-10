@@ -3,16 +3,16 @@ const hbs = require('nodemailer-express-handlebars');
 const util = require('util');
 
 let transport = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT,
     secure: true,
     auth: {
-      type: "OAuth2",
-      user: "nandierruizacosta@gmail.com",
-      clientId: "724751063745-r0hs4h93c6aoiseieds8o20bpt383b69.apps.googleusercontent.com",
-      clientSecret: "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",
-      refreshToken: "1//049QeJedYjJFaCgYIARAAGAQSNwF-L9Ir77JlSNCQSBBK4HCmZ3ZwTpBwtgQeoEWwLWSbhPeSsjWM09Htzy7sybwOmuJhMgn7BjE",
-      accessToken: "ya29.A0ARrdaM-3ZnzmhogA4xgT7Vm1SfL5ApQTIksz66YF9p0z0cWTmLMymE2i4GyLgtmyCUrZ5iT0rpnEvBwzncFQVBImDu_t3yutwOm55IugHXVwMB9lNwAcOHGiqj27qTAgxRaBsHlQkFmiTgun7MCjr6SYc_e-YUNnWUtBVEFTQVRBU0ZRRl91NjFWSjZVSk5CaVk1cUxjRFpOcHdpQ2VEZw0163",
+      type: process.env.EMAIL_type,
+      user: process.env.EMAIL_user,
+      clientId: process.env.EMAIL_clientId,
+      clientSecret: process.env.EMAIL_clientSecret,
+      refreshToken: process.env.EMAIL_refreshToken,
+      accessToken: process.env.EMAIL_accessToken,
     },
   });
 

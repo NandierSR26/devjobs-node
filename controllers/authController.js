@@ -68,16 +68,8 @@ exports.enviarToken = async(req, res, next) => {
     // guardar el usuario
     await usuario.save();
     const resetUrl = `http://${req.headers.host}/reestablecer-password/${usuario.token}`;
-
-    // enviar notificacion por email
-    await enviarEmail.enviar({
-        usuario,
-        subject: 'Password reset',
-        resetUrl,
-        archivo: 'reset'
-    })
-    req.flash('correcto', 'Revisa tu email Para las indicaciones');
-    res.redirect('iniciar-sesion');
+    
+    res.redirect(resetUrl);
 }
 
 // valida si el token es valido y el usuario existe, muestra la vista
