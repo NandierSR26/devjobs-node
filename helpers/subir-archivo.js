@@ -4,8 +4,8 @@ const { v4: uuidv4 } = require('uuid');
 const subirArchivo = ( files, extensionesValidas = ['pdf'], carpeta = '' ) => {
 
     return new Promise((resolve, reject) => {
-        const { cv } = files;
-        const nombreCortado = cv.name.split('.');
+        const { file } = files;
+        const nombreCortado = file.name.split('.');
         const extension = nombreCortado[nombreCortado.length - 1];
 
         // validar la extension
@@ -16,7 +16,7 @@ const subirArchivo = ( files, extensionesValidas = ['pdf'], carpeta = '' ) => {
         const nombreTemp = uuidv4() + '.' + extension;
         const uploadPath = path.join(__dirname, '../public/uploads/', carpeta, nombreTemp);
 
-        cv.mv(uploadPath, (err) => {
+        file.mv(uploadPath, (err) => {
             if (err) {
                 return reject(err);
             }

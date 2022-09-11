@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
+const { subirArchivo } = require('../helpers/subir-archivo');
 const Usuarios = mongoose.model('Usuarios');
 
 const cloudinary = require('cloudinary').v2;
-cloudinary.config( process.env.CLOUDINARY_URL );
+cloudinary.config(process.env.CLOUDINARY_URL);
 
 exports.formCrearCuenta = (req, res) => {
     res.render('crear-cuenta', {
@@ -72,7 +73,7 @@ exports.formEditarPerfil = async (req, res) => {
         nombrePagina: 'Edita tu Perfil en devJobs',
         cerrarSesion: true,
         nombre: req.user.nombre,
-        imagen : req.user.imagen,
+        imagen: req.user.imagen,
         nombre,
         email,
     })
@@ -89,15 +90,16 @@ exports.editarPerfil = async (req, res) => {
         usuario.password = req.body.password;
     }
 
-    try {
-        const { tempFilePath } = req.files.imagen
-        const { secure_url } = await cloudinary.uploader.upload( tempFilePath );
-        usuario.imagen = secure_url;
+    if( req.files ){
+        try {
+            const userPhoto = await subirArchivo(req.files, undefined, 'usuarios');
+            usuario.imagen = userPhoto;
     
-    } catch (error) {
-        req.flash('error', error);
-        console.log(error);
-        res.redirect('/administracion');
+        } catch (error) {
+            req.flash('error', error);
+            console.log(error);
+            res.redirect('/administracion');
+        }
     }
 
     await usuario.save();
