@@ -20,9 +20,10 @@
         {{#if barra}}
             <div class="buscador">
             {{#if userAuthenticated }}
-
             {{else}}
-                <a href="/iniciar-sesion" class="btn btn-azul">Iniciar Sesion</a>
+                <a href="/iniciar-sesion">Iniciar Sesion</a>
+                <p style="color:#fff;">/</p>
+                <a href="/crear-cuenta">Registrarse</a>
             {{/if}}
                 <form action="/buscador" method="post">
                     <input type="text" name="q" class="buscar">
@@ -52,7 +53,10 @@
         {{/if}}
 
         {{#if boton}}
-            <a href="/vacantes/nueva" class="btn btn-azul">Publicar Nueva Vacante</a>
+            <a href="/vacantes/nueva" class="btn btn-azul mb">Publicar Nueva Vacante</a>
+            {{#if userAuthenticated }}
+                <a href="/administracion" class="btn btn-verde">Administración</a>
+            {{/if}}
         {{/if}}
     </header>
     <div class="contenido-principal contenedor">

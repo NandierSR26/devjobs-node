@@ -7,11 +7,22 @@ exports.mostrarTrabajos = async(req, res) => {
 
     if(!vacantes) return next();
 
+    let userAuthenticated;
+
+    if (req.user) {
+        userAuthenticated = true;
+    } else {
+        userAuthenticated = false;
+    }
+
+    console.log(userAuthenticated);
+
     res.render('home', {
         nombrePagina: 'devJobs',
         tagline: 'Encuentra y publica trabajos para desarrolladores web',
         barra: true,
         boton: true,
-        vacantes
+        vacantes,
+        userAuthenticated
     })
 }
